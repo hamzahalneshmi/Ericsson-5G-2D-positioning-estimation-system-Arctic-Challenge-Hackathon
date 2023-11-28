@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ericsson Position Estimation Web App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYLFL4BVtYjoS78Mfm3Z4GJnCA1BdzVH7g4CF4Q+8pkPZ94Jk2b8VcFlkJD2Q" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        h1,
+        h3 {
+            color: #003366;
+            /* Ericsson blue color */
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #6c757d;
+        }
+
+        label {
+            color: #003366;
+            /* Ericsson blue color */
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #003366;
+            /* Ericsson blue color */
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-size: 1.2em;
+            border-radius: 6px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #002040;
+            /* Darker shade for hover */
+        }
+
+        #ericssonHeader {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #ericssonHeader img {
+            max-width: 200px;
+            /* Adjust the logo size as needed */
+        }
+
+        #runExampleBtn {
+            background-color: #003366;
+            /* Bootstrap success color */
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-size: 1.2em;
+            border-radius: 6px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        #runExampleBtn:hover {
+            background-color: #002040;
+            /* Darker shade for hover */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="ericssonHeader">
+            <img src="{{ url_for('static', filename='ericsson_logo.svg') }}" alt="Ericsson Logo">
+        </div>
+        <h1>Ericsson Position Estimation Web App</h1>
+        <p>
+            Welcome to the Ericsson Position Estimation Web App. This tool performs 2D position estimation using
+            time-of-arrival (ToA) measurements obtained from seven base stations. The goal is to estimate the (x, y)
+            position at every time instant, considering noisy ToA measurements.
+        </p>
+        <h3>Methodology</h3>
+        <p>
+            The estimated positions are calculated using a least squares method. For ideal ToA measurements, the
+            position is obtained as the intersections of hyperbolas formed by the ToAs. In the presence of noise,
+            accurate positioning involves optimizing the position using least squares.
+        </p>
+        <h3>Euclidean Distance</h3>
+        <p>
+            The Euclidean distance between the estimated position and each base station is minimized during the least
+            squares optimization. This process ensures that the calculated position aligns with the observed ToA
+            measurements, accounting for noise and inaccuracies.
+        </p>
+        <h3>Upload Data</h3>
+        <p>
+            To get started, upload the CSV files containing base station positions and ToA measurements. The web app
+            will perform the position estimation and display the results.
+        </p>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="bs_data" class="form-label">Upload Base Station Data (CSV):</label>
+                <input type="file" class="form-control" name="bs_data" accept=".csv" required>
+            </div>
+            <div class="mb-3">
+                <label for="toa_data" class="form-label">Upload ToA Data (CSV):</label>
+                <input type="file" class="form-control" name="toa_data" accept=".csv" required>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Estimate Position</button>
+            </div>
+        </form>
+        <h3>
+            In case you don't have access to data, you can run this example. 
+        </h3>
+        <button id="runExampleBtn" onclick="window.location.href='/run_example'">Run Example</button>
+    </div>
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-eOJMYLFL4BVtYjoS78Mfm3Z4GJnCA1BdzVH7g4CF4Q+8pkPZ94Jk2b8VcFlkJD2Q"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
